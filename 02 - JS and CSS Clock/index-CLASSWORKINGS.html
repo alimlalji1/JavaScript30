@@ -80,9 +80,13 @@
       // console.log('Hi');
       const now = new Date();
 
+      // First - getSeconds() gives the exact seconds at current time
       const seconds = now.getSeconds();
       // console.log(seconds);
+      // Works out how many degrees equivalent to the seconds e.g. 1s = 6 degrees. 30s = 180 degrees etc.
+      // Need to add 90 degrees to offset styling transform:rotate(90 deg) - remove & console.log(seconds) to see what happens if "+90" not there
       const secondDegrees = (((seconds/60)*360)+90);
+      // Applies rotation of second hand (as progress through seconds)
       secondHand.style.transform = `rotate(${secondDegrees}deg)`;
 
       const mins = now.getMinutes();
@@ -94,12 +98,14 @@
       // console.log(hours);
       const hourDegrees = (((hours/12)*360)+90);
       hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-
-
     }
 
     // Want to run the function setDate every second => e.g. if console.log('Hi') was body of function - every 1 sec - printed to console
     setInterval(setDate, 1000);
+
+    // NOTE: Watch what happens when reach 12/ 360 degree point - weird glitch. Rather than going forward, transition goes all the way anti-clockwise/backward to correct position
+    // To correct this - for 360 degree point can remove styling: transition: all 0.05s and then re-apply this transiton once the second hand has passed this point
+    // Use of if statements to apply this
 
   </script>
 </body>

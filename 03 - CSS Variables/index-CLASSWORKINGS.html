@@ -21,6 +21,25 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    /* 1. Declare css variables with default values - in this way, they're defined */
+    /*i) Declare css variables on some sort of element - in our case, this element is :root => highest level you can get - similar to declaring on the html element*/
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter:blur(var(--blur));
+
+    }
+
+    .hl{
+      color: var(--base);
+    }
+
 
     /*
       misc styles, nothing to do with CSS variables

@@ -64,6 +64,28 @@
   </style>
 
   <script>
+
+    const inputs = document.querySelectorAll('.controls input');
+    // console.log(inputs);
+
+    function handleUpdateWes() {
+      // console.log(this.value);
+      const suffix = this.dataset.sizing || '';
+      // console.log(suffix);
+
+      // console.log(this.name);
+      console.log(this.value);
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    const handleUpdate = () => {
+      console.log(this.value); /*Inside arrow function - doesn't work => returns undefined*/
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdateWes));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdateWes));
+
+
   </script>
 
 </body>

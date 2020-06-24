@@ -26,6 +26,8 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      /*Step 1. (below) Panels appear one on top of another => need to be side by side*/
+      display: flex;
     }
 
     .panel {
@@ -43,6 +45,20 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      /*Step 2. (below) Width of panels too thin - automatically set to width of longest word. Lot of space on webpage free.*/
+      /*cont... Want to evenly distribute this free space between the panels i.e. panels wider and same width to use all of webpage width.*/
+      flex: 1;
+      border: 3px solid yellow;
+      /*Step 4. Objective: Words all at top of panel - want to center and spread out across length of panel - each word to be in separate third of panel's length*/
+      /*Center them left to right (ie horizontally*)y/
+      justify-content:center;
+      align-items: center;
+      /*Step 5. (below) Make panel itself a flex container => p tags/words become flex items */
+      /*Note: Each panel is a flex item of flex container panelS => can nest wrt flexbox*/
+      display:flex;
+      /*Step 6. As a result of above step => flex items (p tags in this case) stacked left to right*/
+      /*(below) Words moved to vertical (on on top of another)*/
+      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -51,12 +67,33 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
-    /* Flex Children */
+    /* Flex Items */
     .panel > * {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      /*Step 3. (below) To help visualise things - selector selecting direct children of .panel (ie p tags)*/
+      border: 2px solid red;
+      /*Spreads words out - each word/p tag - occupies 1/3 of panel length*/
+      flex: 1 0 auto;
+      /*Reason for below: ie p tag as flex container - purely for purpose of centering the word correctly within its third - has no children/flex items associated with it*/
+      display: flex;
+      /*Centered using below 2*/
+      justify-content: center;
+      align-items: center;
     }
+
+    /*To hide first word of panel - only going to show when click on it*/
+    .panel > *:first-child { transform: translateY(-100%); }
+    /*Only when panel clicked on - ie has class of open-active => will first-child be shown*/
+    .panel.open-active > *:first-child { transform: translateY(0); }
+
+
+    /*To hide last word of panel - only going to show when click on it*/
+    .panel > *:last-child { transform: translateY(100%); }
+
+    .panel.open-active > *:last-child { transform: translateY(0); }
+
 
     .panel p {
       text-transform: uppercase;
@@ -70,6 +107,7 @@
     }
 
     .panel.open {
+      flex: 5;
       font-size: 40px;
     }
 
@@ -105,6 +143,30 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+    // Returns node list
+    // console.log(panels);
+    function toggleOpen() {
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e) {
+      console.log(e.propertyName); //=> shows two transitions happen when panel open - trigger flex (grow) and font size. Only care about flex grow here.
+      // inludes flex below as some browsers call this term flex and others as flex grow - FYI it's a flex grow.
+      if(e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    // panels = node list. Therefore, want to add event listener => listens to all the panels for a click. If a click on one of panels, callback function is toggleOpen => ie find that function (above) and run it
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen))
+    // Above event listener - as click, triggers toggleOpen - open class makes panel grow but won't show first and third p tag (words)
+    // On toggleOpen being triggered - as soon as done (ie transitionend) => want words to appear
+    // Hence event = transitionend but there are multiple transitionend events that will be fired. See console.log(e.propertyName)
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive))
+
+
+
 
   </script>
 
